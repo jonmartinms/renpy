@@ -699,10 +699,10 @@ fix_dlc("renios", "renios")
                     self.file_lists[k] = self.file_lists[k].reprefix("sdk-fonts", "game")
 
             # Add Python (with the same name as our executables)
-            self.add_python()
+            # self.add_python()
 
             # Build the mac app and windows exes.
-            self.add_mac_files()
+            # self.add_mac_files()
             self.add_windows_files()
 
             # Add the main.py.
