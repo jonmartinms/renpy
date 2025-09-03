@@ -131,11 +131,14 @@ init -1500 python in build:
         # Web patterns.
         ( "lib/web/**", "web"),
 
+        # Xbox patterns.
+        ( "lib/py*-xbox-x64/**", "xbox"),
+
         # Old Python library.
         ( "lib/python2.*/**", None),
 
         # Shared patterns.
-        ( "lib/**", "windows linux mac android ios"),
+        ( "lib/**", "windows linux mac android ios xbox"),
         ( renpy_sh, "linux mac"),
     ]))
 
@@ -392,7 +395,7 @@ init -1500 python in build:
         formats = format.split()
 
         for i in formats:
-            if i not in { "zip", "app-zip", "tar.bz2", "directory", "dmg", "app-directory", "app-dmg", "bare-zip", "bare-tar.bz2", "null" }:
+            if i not in { "zip", "appx", "app-zip", "tar.bz2", "directory", "dmg", "app-directory", "app-dmg", "bare-zip", "bare-tar.bz2", "null" }:
                 raise Exception("Format {} not known.".format(i))
 
         if description is None:
@@ -425,6 +428,7 @@ init -1500 python in build:
     package("android", "directory", "android all", hidden=True, update=False, dlc=True)
     package("ios", "directory", "ios all", hidden=True, update=False, dlc=True)
     package("web", "zip", "web renpy all", hidden=True, update=False, dlc=True)
+    package("xbox", "directory", "xbox renpy all", "Xbox One and Series X/S")
 
     # Data that we expect the user to set.
 

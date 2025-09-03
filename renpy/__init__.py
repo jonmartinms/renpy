@@ -149,13 +149,14 @@ bytecode_version: int = 1
 ################################################################################
 
 # Information about the platform we're running on. We break the platforms
-# up into 6 groups - windows-like, mac-like, linux-like, android-like,
-# ios-like and web (aka. emscripten).
+# up into 7 groups - windows-like, mac-like, linux-like, android-like,
+# ios-like, xbox-like, and web (aka. emscripten).
 windows: bool = False
 macintosh: bool = False
 linux: bool = False
 android: bool = False
 ios: bool = False
+xbox: bool = False
 emscripten: bool = False
 
 # Should we enable experimental features and debugging?
@@ -173,6 +174,8 @@ elif "ANDROID_PRIVATE" in os.environ:
     android = True
 elif sys.platform == "emscripten" or "RENPY_EMSCRIPTEN" in os.environ:
     emscripten = True
+elif "XDK_DIR" in os.environ or "GAMESDK" in os.environ or "GRDK_DIR" in os.environ or os.environ.get("RENPY_PLATFORM", "").startswith("xbox"):
+    xbox = True
 else:
     linux = True
 
@@ -180,6 +183,9 @@ arch: str = os.environ.get("RENPY_PLATFORM", "unknown-unknown-unknown").rpartiti
 
 # A flag that's true if we're on a smartphone or tablet-like platform.
 mobile: bool = android or ios or emscripten
+
+# A flag that's true if we're on a console platform.
+console: bool = xbox
 
 # A flag that's set to true if the game directory is bundled inside a mac app.
 macapp: bool = False

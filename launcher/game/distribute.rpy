@@ -704,6 +704,7 @@ fix_dlc("renios", "renios")
             # Build the mac app and windows exes.
             # self.add_mac_files()
             self.add_windows_files()
+            self.add_xbox_files()
 
             # Add the main.py.
             self.add_main_py()
@@ -1269,6 +1270,38 @@ fix_dlc("renios", "renios")
             write_exe("lib/py3-windows-x86_64/renpy.exe", self.exe, self.exe, windows)
             write_exe("lib/py3-windows-x86_64/pythonw.exe", "lib/py3-windows-x86_64/pythonw.exe", "pythonw-64.exe", windows)
 
+        def add_xbox_files(self):
+            """
+            Adds Xbox GDK-specific files with correct DLL names.
+            """
+
+            if self.build['renpy']:
+                xbox = 'binary'
+            else:
+                xbox = 'xbox'
+
+            # Xbox executable
+            self.add_file(xbox, self.exe,
+                os.path.join(config.renpy_base, "lib/py3-xbox-x64/renpy.exe"))
+
+            # Xbox GDK required runtime DLLs with correct names
+            xbox_gdk_dlls = [
+                "Microsoft.Xbox.Services.GDK.C.Thunks.dll",
+                "xgameruntime.thunks.dll",
+                "libHttpClient.GDK.dll",
+                "XCurl.dll"
+            ]
+
+            for dll in xbox_gdk_dlls:
+                dll_path = os.path.join(config.renpy_base, f"lib/py3-xbox-x64/{dll}")
+                if os.path.exists(dll_path):
+                    self.add_file(xbox, f"lib/py3-xbox-x64/{dll}", dll_path)
+
+            # Add Xbox app manifest
+            manifest_path = os.path.join(self.project.path, "Package.appxmanifest")
+            if os.path.exists(manifest_path):
+                self.add_file(xbox, "Package.appxmanifest", manifest_path)
+
 
         def add_main_py(self):
             if self.build['renpy']:
@@ -1527,6 +1560,8 @@ fix_dlc("renios", "renios")
                 "bare-tar.bz2" : (".tar.bz2", False, False, False),
                 "bare-zip" : (".zip", False, False, False),
 
+                "appx" : ("-appx", True, False, True),
+                
                 "null" : ( "", True, False, False),
             }
 

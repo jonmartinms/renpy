@@ -76,6 +76,28 @@ def main():
         library("comdlg32")
         library("ole32")
 
+    # Xbox GDK specific configuration
+    xbox = os.environ.get("RENPY_XBOX", None) or os.environ.get("XDK_DIR", None) or os.environ.get("GAMESDK", None) or os.environ.get("GRDK_DIR", None)
+    if xbox:
+        # Xbox GDK preprocessor symbols
+        setuplib.global_macros.extend([
+            ("WINAPI_FAMILY", "WINAPI_FAMILY_GAMES"),
+            ("_GAMING_XBOX", "1"),
+            ("_GAMING_XBOX_XBOXONE", "1"),
+            ("_GAMING_XBOX_SCARLETT", "1"),
+            ("XBOX_GDK", "1")
+        ])
+        setuplib.extra_compile_args.extend([
+            "-fno-strict-aliasing",
+            "-DWINAPI_FAMILY=WINAPI_FAMILY_GAMES",
+            "-D_GAMING_XBOX=1"
+        ])
+        # Xbox GDK runtime libraries
+        library("xgameruntime")
+        library("Microsoft.Xbox.Services.GDK.C")
+        library("libHttpClient.GDK")
+        library("XCurl")
+
     cubism = os.environ.get("CUBISM", None)
     if cubism:
         setuplib.include_dirs.append("{}/Core/include".format(cubism))

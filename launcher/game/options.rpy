@@ -424,6 +424,16 @@ init python:
 
     build.classify_renpy("lib/", "binary")
 
+    # Xbox GDK runtime file classification
+    build.classify_renpy("lib/py3-xbox-x64/Microsoft.Xbox.Services.GDK.C.Thunks.dll", "xbox")
+    build.classify_renpy("lib/py3-xbox-x64/xgameruntime.thunks.dll", "xbox")
+    build.classify_renpy("lib/py3-xbox-x64/libHttpClient.GDK.dll", "xbox")
+    build.classify_renpy("lib/py3-xbox-x64/XCurl.dll", "xbox")
+    build.classify_renpy("lib/py3-xbox-x64/renpy.exe", "xbox")
+    
+    # Xbox GDK executable patterns
+    build.classify_renpy("lib/py3-xbox-x64/**", "xbox")
+
     # Packages.
     build.packages = [ ]
 
@@ -435,6 +445,9 @@ init python:
     build.package("rapt", "zip", "rapt", dlc=True)
     build.package("renios", "zip", "renios", dlc=True)
     build.package("web", "zip", "web", dlc=True)
+    
+    # Xbox GDK package definition
+    build.package("xbox", "appx directory", "source binary xbox")
 
 # The identifier for the SDK.
 define build.mac_info_plist["CFBundleIdentifier"] = "org.renpy.sdk"
